@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: Apache-2.0
+
+version = 1
+
+# Computer-generated files and other files which cannot be copyrighted
+[[annotations]]
+path = [
+    ".dockerignore",
+    ".editorconfig",
+    ".gitignore",
+    "Cargo.lock",
+    "**/Cargo.toml",
+    "Cargo.toml",
+    "rust-toolchain.toml",
+    ".github/renovate.json",
+    "CLAUDE.md",
+]
+SPDX-FileCopyrightText = "NONE"
+SPDX-License-Identifier = "CC0-1.0"
+
+# Formats without a comfortable comment syntax for headers
+[[annotations]]
+path = [".github/workflows/*.yml", "assets/branding/*.svg"]
+SPDX-FileCopyrightText = "2026 Slavi Pantaleev"
+SPDX-License-Identifier = "Apache-2.0"

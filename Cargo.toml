@@ -1,0 +1,70 @@
+[workspace]
+resolver = "3"
+members = ["crates/*", "."]
+
+[workspace.package]
+version = "0.0.0" # Releases are CalVer Git tags; the build injects KUKAROLL_VERSION.
+publish = false
+edition = "2024"
+authors = ["Slavi Pantaleev <slavi@devture.com>"]
+license = "Apache-2.0"
+repository = "https://github.com/devture/kukaroll"
+rust-version = "1.99"
+
+[workspace.dependencies]
+tempfile = "3"
+anyhow = "1.0"
+axum = { version = "0.8", default-features = false, features = ["http1", "tokio"] }
+clap = { version = "4.6", features = ["derive"] }
+hex = "0.4"
+hmac = "0.13"
+rustix = { version = "1.1", features = ["event", "fs", "process", "thread"] }
+schemars = "1.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde-saphyr = { version = "2.0", default-features = false, features = ["deserialize"] }
+sha2 = "0.11"
+thiserror = "2"
+tokio = { version = "1.54", features = ["fs", "macros", "net", "rt", "signal", "sync", "time"] }
+tower = { version = "0.5", features = ["util"] }
+ureq = { version = "3.5", features = ["platform-verifier"] }
+
+kukaroll-config = { path = "crates/config" }
+kukaroll-receiver = { path = "crates/receiver" }
+kukaroll-executor = { path = "crates/executor" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = "warn"
+
+[package]
+name = "kukaroll"
+description = "Rolls out git pushes by running each project's own deploy hooks"
+version.workspace = true
+publish.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+schemars.workspace = true
+serde_json.workspace = true
+kukaroll-config.workspace = true
+kukaroll-receiver.workspace = true
+kukaroll-executor.workspace = true
+tokio.workspace = true
+
+[lints]
+workspace = true
+
+[profile.release]
+strip = true
+lto = "thin"
+codegen-units = 1
+panic = "abort"

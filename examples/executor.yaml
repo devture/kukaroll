@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: Apache-2.0
+
+schema_version: 1
+# Host paths: the executor works inside the host's namespaces.
+projects:
+  myapp:
+    checkout: /srv/myapp
+    remote: origin
+    branch: main
+    # git as the checkout's owner (its SSH key fetches); hooks as root, for `docker compose`.
+    git_user: myapp
+    hooks_user: root
+    lock_file: /srv/myapp/var/deploy.lock
+    # The new commit's version of the script (a plain path would run the old one).
+    pre_flight: ["bash", "-c", "set -o pipefail; git show \"$KUKAROLL_COMMIT:ci/pre-flight\" | bash"]
+    deploy: ["just", "deploy"]
+    healthchecks:
+      ping_url: https://hc-ping.com/00000000-0000-0000-0000-000000000000
+  blog:
+    # A static site: moving the checkout is the whole deploy.
+    checkout: /srv/blog
+    remote: origin
+    branch: main
+    git_user: www
+    hooks_user: www
+    lock_file: /srv/blog-deploy.lock
+    pre_flight: null
+    deploy: null
+    healthchecks: null

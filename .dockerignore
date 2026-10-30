@@ -1,0 +1,8 @@
+**
+!Cargo.toml
+!Cargo.lock
+!src/
+!src/**
+!crates/
+!crates/**
+!LICENSES/Apache-2.0.txt

@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# One instance per project: systemctl enable --now kukaroll-execute@myapp.path
+# The receiver creates the spool file; kukaroll-execute@.service deletes it first thing.
+
+[Unit]
+Description=kukaroll deploy trigger for %i
+
+[Path]
+PathExists=/var/lib/kukaroll/spool/%i
+Unit=kukaroll-execute@%i.service
+
+[Install]
+WantedBy=multi-user.target

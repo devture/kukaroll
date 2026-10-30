@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Started by kukaroll-execute@<project>.path.
+# systemd runs 1 instance per project at a time,
+# and folds triggers that arrive during a run into 1 follow-up run.
+
+[Unit]
+Description=kukaroll deploy of %i
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+
+# Bounds the whole run, including waiting for the project's lock.
+TimeoutStartSec=30min
+
+# Runs before anything can fail (a missing image, a broken configuration):
+# a spool file left behind would retrigger the failing run until systemd's start limit.
+# A push during the run creates it again, which triggers 1 follow-up run.
+ExecStartPre=/usr/bin/rm -f /var/lib/kukaroll/spool/%i
+
+# Privileged, with the host's PID namespace:
+# the executor joins the host's namespaces and runs git and the hooks there as the project's users.
+# Output is attached, so it lands in this unit's journal.
+ExecStart=/usr/bin/docker run --rm --name kukaroll-execute-%i \
+    --privileged --pid=host --user 0:0 --log-driver=none \
+    --mount type=bind,src=/etc/kukaroll/executor.yaml,dst=/config/executor.yaml,readonly \
+    ghcr.io/devture/kukaroll:latest execute --config /config/executor.yaml %i
+
+# On timeout, systemd kills the docker client.
+# This makes sure the container goes too, with every hook process (they stay in its cgroup).
+ExecStopPost=-/usr/bin/docker rm --force kukaroll-execute-%i

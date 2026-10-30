@@ -1,0 +1,59 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:recommended",
+		"helpers:pinGitHubActionDigests"
+	],
+	"labels": [
+		"dependencies"
+	],
+	"packageRules": [
+		{
+			"matchManagers": [
+				"dockerfile"
+			],
+			"pinDigests": true
+		},
+		{
+			"description": "One pull request bumps the Rust toolchain pin and the Dockerfile's rust build image together; they must match.",
+			"matchPackageNames": [
+				"rust",
+				"docker.io/rust"
+			],
+			"groupName": "Rust toolchain"
+		}
+	],
+	"customManagers": [
+		{
+			"customType": "regex",
+			"managerFilePatterns": [
+				".github/workflows/rust.yml"
+			],
+			"matchStrings": [
+				"CARGO_DENY_VERSION: \"(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)\""
+			],
+			"datasourceTemplate": "crate",
+			"depNameTemplate": "cargo-deny",
+			"versioningTemplate": "semver"
+		},
+		{
+			"customType": "regex",
+			"managerFilePatterns": [
+				"rust-toolchain.toml"
+			],
+			"matchStrings": [
+				"channel = \"(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)\""
+			],
+			"datasourceTemplate": "docker",
+			"depNameTemplate": "rust",
+			"packageNameTemplate": "docker.io/rust",
+			"versioningTemplate": "docker"
+		}
+	],
+	"prConcurrentLimit": 3,
+	"rebaseWhen": "behind-base-branch",
+	"automerge": false,
+	"lockFileMaintenance": {
+		"enabled": true
+	}
+}

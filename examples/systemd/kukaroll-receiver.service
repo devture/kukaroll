@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Unprivileged: it can only create files in the spool directory (writable by its user).
+
+[Unit]
+Description=kukaroll webhook receiver
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker rm --force kukaroll-receiver
+
+ExecStart=/usr/bin/docker run --rm --name kukaroll-receiver \
+    --user 65534:65534 --read-only --cap-drop=ALL --security-opt=no-new-privileges \
+    --publish 127.0.0.1:8080:8080 \
+    --mount type=bind,src=/etc/kukaroll/receiver.yaml,dst=/config/receiver.yaml,readonly \
+    --mount type=bind,src=/etc/kukaroll/secrets,dst=/secrets,readonly \
+    --mount type=bind,src=/var/lib/kukaroll/spool,dst=/spool \
+    ghcr.io/devture/kukaroll:latest receive --config /config/receiver.yaml
+
+ExecStop=/usr/bin/docker stop kukaroll-receiver
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

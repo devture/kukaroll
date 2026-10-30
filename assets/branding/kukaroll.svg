@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="-117 -159 237 237" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <title>kukaroll</title>
+  <style>.line{stroke:#172b3a}@media (prefers-color-scheme:dark){.line{stroke:#dbe4ec}}</style>
+  <defs><linearGradient id="kukaroll-roll" x1="0" y1="0" x2="-112" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#f2b33d"/><stop offset="1" stop-color="#e5533d"/></linearGradient></defs>
+  <g transform="rotate(45)">
+    <path class="line" stroke-width="12" d="M0 -140V-124M0 -92V-68M0 -36V0"/>
+    <circle cy="-108" r="16" stroke="#8b5cf6" stroke-width="12"/>
+    <circle cy="-52" r="16" stroke="#3b82f6" stroke-width="12"/>
+    <path d="M0 0A56 56 0 0 1 -112 0A42 42 0 0 1 -28 0A28 28 0 0 1 -84 0A14 14 0 0 1 -56 0" stroke="url(#kukaroll-roll)" stroke-width="14"/>
+  </g>
+</svg>

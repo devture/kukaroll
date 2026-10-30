@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: Apache-2.0
+
+schema_version: 1
+listen: 0.0.0.0:8080
+# As mounted into the receiver's container.
+spool_dir: /spool
+projects:
+  myapp:
+    branch: main
+    webhook:
+      provider: forgejo
+      secret_file: /secrets/myapp
+  blog:
+    branch: main
+    webhook:
+      provider: github
+      secret_file: /secrets/blog
