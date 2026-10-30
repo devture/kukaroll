@@ -83,6 +83,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
+      artifact-metadata: write
     with:
       channel: stable
       version: ${{ needs.plan.outputs.version }}
