@@ -6,7 +6,7 @@
 # The receiver needs only the binary.
 # The executor runs git and the project's hooks inside the host's namespaces, so the image ships nothing else either.
 
-FROM docker.io/rust:1.99.1-alpine3.24@sha256:3ea887915f261f273d6a24efdfdb92665dee12199923e57870453644fe4ae5c9 AS build
+FROM docker.io/rust:1.99.1-alpine3.24@sha256:7e9e2d068a107a2adafd19930011178d14a78326053cd4c3a9f7ad3fd049557d AS build
 WORKDIR /build
 COPY Cargo.toml Cargo.lock ./
 COPY src/ ./src/
