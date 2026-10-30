@@ -15,6 +15,16 @@
 			"pinDigests": true
 		},
 		{
+			"description": "Digests change only together with their versions: a digest refresh alone would rebuild and release an otherwise unchanged image.",
+			"matchManagers": [
+				"dockerfile"
+			],
+			"matchUpdateTypes": [
+				"digest"
+			],
+			"enabled": false
+		},
+		{
 			"description": "One pull request bumps the Rust toolchain pin and the Dockerfile's rust build image together; they must match.",
 			"matchPackageNames": [
 				"rust",
