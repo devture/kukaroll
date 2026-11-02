@@ -76,8 +76,10 @@ class Decide(unittest.TestCase):
     def test_cap_overrides_pending_prs(self):
         self.assertTrue(self.decide(landing=["#36"], age=90 * MINUTE))
 
-    def test_manual_requests_skip_waiting(self):
-        self.assertTrue(self.decide(forced=True, ci="failure", age=MINUTE, landing=["#36"]))
+    def test_manual_requests_skip_waiting_but_not_ci(self):
+        self.assertTrue(self.decide(forced=True, age=MINUTE, landing=["#36"]))
+        self.assertFalse(self.decide(forced=True, ci="failure"))
+        self.assertFalse(self.decide(forced=True, ci="in_progress"))
 
 
 if __name__ == "__main__":

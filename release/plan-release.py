@@ -61,10 +61,11 @@ def minutes(age):
 def decide(*, forced, changed, ci, age, landing):
     if not changed:
         return False, "nothing in the image changed since the last release"
-    if forced:
-        return True, "manually requested"
     if ci != "success":
         return False, f"CI for this commit is {ci}"
+    # A manual run skips only the waiting, never CI.
+    if forced:
+        return True, "manually requested"
     if age >= QUIET_CAP:
         return True, f"main has been quiet for {minutes(age)} (cap reached)"
     if landing:

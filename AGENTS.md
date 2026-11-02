@@ -31,7 +31,7 @@ Cargo packages stay at `0.0.0`; release builds embed the real version via `KUKAR
 `.github/workflows/release.yml` runs after every CI run on main, and every 30 minutes as a fallback.
 [`release/plan-release.py`](release/plan-release.py) releases main's head commit when something in the image changed since the last tag (`IMAGE_PATHS`) and CI passed,
 and either no open Renovate PR may still land or the commit is at least 90 minutes old.
-A manual `Release` run releases immediately if the image changed.
+A manual `Release` run releases right away if the image changed and CI passed.
 
 [`release/release-notes.py`](release/release-notes.py) writes each GitHub Release's notes from its commits, best effort:
 every non-merge commit that touches the image is listed by its subject, so write subjects that read well to people who run kukaroll.
