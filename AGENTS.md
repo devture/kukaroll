@@ -29,8 +29,9 @@ Nobody picks versions or pushes tags by hand.
 Cargo packages stay at `0.0.0`; release builds embed the real version via `KUKAROLL_VERSION`.
 
 `.github/workflows/release.yml` runs after every CI run on main, and every 30 minutes as a fallback.
-[`release/plan-release.py`](release/plan-release.py) releases main's head commit when something in the image changed since the last tag (`IMAGE_PATHS`) and CI passed,
+[`release/plan-release.py`](release/plan-release.py) releases main's head commit when something in the image changed since the last tag and CI passed,
 and either no open Renovate PR may still land or the commit is at least 90 minutes old.
+The image's paths are the Dockerfile's `COPY` sources plus the `Dockerfile` and `.dockerignore`; keep each `COPY` on 1 line without JSON syntax, or the release scripts refuse it (`just release-test` checks).
 A manual `Release` run releases right away if the image changed and CI passed.
 
 [`release/release-notes.py`](release/release-notes.py) writes each GitHub Release's notes from its commits, best effort:
