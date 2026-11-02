@@ -47,7 +47,7 @@ Its tags:
 
 | Tag | What it is |
 |---|---|
-| `vYYYY.MM.DD.N`, e.g. `v2026.11.03.0` | a release (the same Git tag); releases up to `2026.11.02.0` are tagged without the `v` |
+| `vYYYY.MM.DD.N`, e.g. `v2026.11.03.0` | a release (the same Git tag); releases up to `2026.11.02.0` are also tagged without the `v` |
 | `latest` | the newest release |
 | `edge` | the newest commit on `main` that passed CI (not a release) |
 | `edge-<full commit hash>` | that commit on `main` |
