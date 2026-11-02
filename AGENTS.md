@@ -18,6 +18,7 @@ The receiver is internet-facing and must stay unprivileged: it only touches spoo
 The executor trusts nothing from the network.
 
 Use `just` for build and check entry points; `just check` covers formatting, Clippy, tests, the release scripts and REUSE.
+Install the Git pre-commit hook once with `just prek-install-git-pre-commit-hook` (prek, pinned in `mise.toml`); it runs the release-script tests when `release/` or the Dockerfile changes.
 CI also runs `just deny` (cargo-deny: advisories, licenses, sources); a new advisory can fail it without any change in the repo.
 New source and docs need SPDX/REUSE coverage.
 Write documentation for public use with generic examples; keep operator-specific hosts, projects and plans out of the repo.
