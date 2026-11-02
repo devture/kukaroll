@@ -24,7 +24,7 @@ Write documentation for public use with generic examples; keep operator-specific
 
 ## Releases
 
-Releases are CalVer Git tags `vYYYY.MM.DD.N` (UTC date; `N` counts from 0 within the day), published as `ghcr.io/devture/kukaroll:YYYY.MM.DD.N` and `latest`.
+Releases are CalVer Git tags `vYYYY.MM.DD.N` (UTC date; `N` counts from 0 within the day), published as `ghcr.io/devture/kukaroll:vYYYY.MM.DD.N` and `latest`.
 Nobody picks versions or pushes tags by hand.
 Cargo packages stay at `0.0.0`; release builds embed the real version via `KUKAROLL_VERSION`.
 

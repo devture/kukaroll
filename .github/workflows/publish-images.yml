@@ -68,7 +68,8 @@ jobs:
                   match = re.fullmatch('refs/tags/v' + calver, ref)
                   assert not match or tuple(map(int, match.groups())) <= selected, 'A newer release tag exists; refusing to move latest backward'
               eligible = True
-              base, aliases = version, ['latest']
+              # Image tags match the Git tags, like other projects' images (e.g. v1.2.3).
+              base, aliases = f'v{version}', ['latest']
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write(f'eligible={str(eligible).lower()}\nbase={base}\naliases={" ".join(aliases)}\n')
           PYTHON

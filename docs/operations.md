@@ -102,7 +102,7 @@ remove it from both files, and restart the receiver.
 Check the [GitHub releases](https://github.com/devture/kukaroll/releases) for changes, then change the image tag in the units (see [Container image](installing.md#container-image)):
 
 ```sh
-docker pull ghcr.io/devture/kukaroll:2026.10.30.0
+docker pull ghcr.io/devture/kukaroll:v2026.11.03.0
 systemctl daemon-reload
 systemctl restart kukaroll-receiver.service
 ```

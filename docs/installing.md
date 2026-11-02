@@ -47,7 +47,7 @@ Its tags:
 
 | Tag | What it is |
 |---|---|
-| `YYYY.MM.DD.N`, e.g. `2026.10.30.0` | a release (the Git tag `v2026.10.30.0`) |
+| `vYYYY.MM.DD.N`, e.g. `v2026.11.03.0` | a release (the same Git tag); releases up to `2026.11.02.0` are tagged without the `v` |
 | `latest` | the newest release |
 | `edge` | the newest commit on `main` that passed CI (not a release) |
 | `edge-<full commit hash>` | that commit on `main` |
@@ -62,7 +62,7 @@ proof that this repository's workflow built it, and from which commit.
 Check one with the [GitHub CLI](https://cli.github.com/):
 
 ```sh
-gh attestation verify oci://ghcr.io/devture/kukaroll:2026.10.30.0 --owner devture
+gh attestation verify oci://ghcr.io/devture/kukaroll:v2026.11.03.0 --owner devture
 ```
 
 To build the image yourself: `just image` (or `docker build --tag kukaroll:dev .`).
@@ -124,7 +124,7 @@ The steps below use their paths and a project named `myapp`, checked out in `/sr
    ```sh
    docker run --rm --user 0:0 \
        --mount type=bind,src=/etc/kukaroll,dst=/etc/kukaroll,readonly \
-       ghcr.io/devture/kukaroll:2026.10.30.0 check-config executor /etc/kukaroll/executor.yaml
+       ghcr.io/devture/kukaroll:v2026.11.03.0 check-config executor /etc/kukaroll/executor.yaml
    ```
 
    and the same with `check-config receiver /etc/kukaroll/receiver.yaml`.
