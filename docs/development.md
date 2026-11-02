@@ -29,4 +29,6 @@ CI runs it for both architectures on throwaway runners.
 ## Releases
 
 Releases are automatic: CI tags main's head commit when the image changed and the checks passed, and publishes the image.
+Each release's GitHub Release notes list the commits since the previous one that touch the image.
+Commit messages can adjust them with `Release-note:` and `Breaking-change:` trailers (see [AGENTS.md](../AGENTS.md#releases)).
 See [Installing](installing.md#container-image) for the version scheme.

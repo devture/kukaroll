@@ -7,7 +7,7 @@
 Releases are CalVer tags (vYYYY.MM.DD.N, UTC date, N counting from 0 per day) cut without a human choosing a version.
 To fold a burst of Renovate merges into 1 release, an unforced run waits while another Renovate PR may still land,
 but never longer than QUIET_CAP after the last commit.
-Writes `release`, `version` and `reason` to $GITHUB_OUTPUT.
+Writes `release`, `version`, `previous` (the previous release tag, or "none") and `reason` to $GITHUB_OUTPUT.
 """
 import datetime
 import json
@@ -73,6 +73,7 @@ def main():
     if os.environ["GITHUB_REF"] != "refs/heads/main":
         sys.exit("Releases are only cut from main")
     head = json.loads(run("gh", "api", f"repos/{repository}/git/ref/heads/main"))["object"]["sha"]
+    previous = "none"
     if head != sha:
         release, reason = False, f"main has moved on to {head}; a later run decides for it"
     else:
@@ -93,7 +94,7 @@ def main():
     version = next_version(run("git", "tag", "--list", "v*").splitlines(), datetime.datetime.now(datetime.UTC).date()) if release else ""
     print(f"{'Releasing ' + version if release else 'Not releasing'}: {reason}")
     with open(os.environ["GITHUB_OUTPUT"], "a") as output:
-        output.write(f"release={str(release).lower()}\nversion={version}\nreason={reason}\n")
+        output.write(f"release={str(release).lower()}\nversion={version}\nprevious={previous}\nreason={reason}\n")
     with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as summary:
         summary.write(f"{'Releasing `v' + version + '`' if release else 'Not releasing'}: {reason}\n")
 

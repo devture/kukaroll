@@ -33,6 +33,14 @@ Cargo packages stay at `0.0.0`; release builds embed the real version via `KUKAR
 and either no open Renovate PR may still land or the commit is at least 90 minutes old.
 A manual `Release` run releases immediately if the image changed.
 
+[`release/release-notes.py`](release/release-notes.py) writes each GitHub Release's notes from its commits, best effort:
+every non-merge commit that touches the image is listed by its subject, so write subjects that read well to people who run kukaroll.
+Optional trailers improve the notes; Git only reads trailers in the message's last paragraph,
+so put them in 1 block with any `Co-Authored-By:`, without blank lines between them:
+`Release-note: <text>` rewords the entry (or includes a commit outside the image, such as documentation),
+`Release-note: skip` leaves out a commit nobody upgrading needs to know about,
+and `Breaking-change: <what breaks and what to do>` lists the commit first, under "Breaking changes".
+
 ## Dependency updates
 
 Renovate bumps the Rust version in `rust-toolchain.toml` and the Dockerfile's `rust` build image in 1 pull request; keep the two equal.
