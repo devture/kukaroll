@@ -46,6 +46,16 @@ class LandingSoon(unittest.TestCase):
                 self.assertFalse(plan.may_land_soon(stuck))
 
 
+class BranchMayLand(unittest.TestCase):
+    def test_branches_ahead_of_main_may_land_unless_their_ci_failed(self):
+        for ci in ["success", "in_progress", "queued", "missing"]:
+            with self.subTest(ci=ci):
+                self.assertTrue(plan.branch_may_land(True, ci))
+        self.assertFalse(plan.branch_may_land(True, "failure"))
+        self.assertFalse(plan.branch_may_land(True, "cancelled"))
+        self.assertFalse(plan.branch_may_land(False, "success"))
+
+
 class Decide(unittest.TestCase):
     def decide(self, **overrides):
         return plan.decide(**{"forced": False, "changed": True, "ci": "success", "age": 20 * MINUTE, "landing": [], **overrides})[0]
@@ -61,13 +71,13 @@ class Decide(unittest.TestCase):
     def test_waits_for_green_ci_and_pending_renovate_prs(self):
         self.assertFalse(self.decide(ci="failure"))
         self.assertFalse(self.decide(ci="in_progress", age=200 * MINUTE))
-        self.assertFalse(self.decide(landing=[36]))
+        self.assertFalse(self.decide(landing=["#36"]))
 
     def test_cap_overrides_pending_prs(self):
-        self.assertTrue(self.decide(landing=[36], age=90 * MINUTE))
+        self.assertTrue(self.decide(landing=["#36"], age=90 * MINUTE))
 
     def test_manual_requests_skip_waiting(self):
-        self.assertTrue(self.decide(forced=True, ci="failure", age=MINUTE, landing=[36]))
+        self.assertTrue(self.decide(forced=True, ci="failure", age=MINUTE, landing=["#36"]))
 
 
 if __name__ == "__main__":
