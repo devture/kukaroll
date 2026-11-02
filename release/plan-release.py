@@ -39,7 +39,7 @@ def next_version(tags, today):
 
 
 def may_land_soon(pr):
-    """A Renovate PR that ArtiDezi could still merge (not draft, conflicted, rejected or red)."""
+    """A Renovate PR that could still be merged (not draft, conflicted, rejected or red)."""
     if pr.get("isDraft") or pr.get("mergeable") == "CONFLICTING" or pr.get("reviewDecision") == "CHANGES_REQUESTED":
         return False
     return not any((check.get("conclusion") or check.get("state")) in FAILED
