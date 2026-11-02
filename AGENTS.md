@@ -30,7 +30,7 @@ Cargo packages stay at `0.0.0`; release builds embed the real version via `KUKAR
 
 `.github/workflows/release.yml` runs after every CI run on main, and every 30 minutes as a fallback.
 [`release/plan-release.py`](release/plan-release.py) releases main's head commit when something in the image changed since the last tag and CI passed,
-and either no open Renovate PR may still land or the commit is at least 90 minutes old.
+and either no Renovate update to the image (an open PR, or a branch Renovate merges itself) may still land or the commit is at least 90 minutes old.
 The image's paths are the Dockerfile's `COPY` sources plus the `Dockerfile` and `.dockerignore`; keep each `COPY` on 1 line without JSON syntax, or the release scripts refuse it (`just release-test` checks).
 A manual `Release` run releases right away if the image changed and CI passed.
 
