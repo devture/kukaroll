@@ -128,11 +128,13 @@ class Read(unittest.TestCase):
     def setUp(self):
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
-        # Ignores the user's Git configuration (commit signing, hooks).
-        env = {"GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1", "GIT_DIR": f"{directory.name}/.git",
-               "GIT_AUTHOR_NAME": "renovate[bot]", "GIT_AUTHOR_EMAIL": "r@example.com",
-               "GIT_COMMITTER_NAME": "c", "GIT_COMMITTER_EMAIL": "c@example.com"}
-        patch = unittest.mock.patch.dict(os.environ, env)
+        # Ignores the user's Git configuration (commit signing, hooks),
+        # and the GIT_* variables of a Git hook running these tests (e.g. GIT_INDEX_FILE).
+        env = {name: value for name, value in os.environ.items() if not name.startswith("GIT_")}
+        env |= {"GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1", "GIT_DIR": f"{directory.name}/.git",
+                "GIT_AUTHOR_NAME": "renovate[bot]", "GIT_AUTHOR_EMAIL": "r@example.com",
+                "GIT_COMMITTER_NAME": "c", "GIT_COMMITTER_EMAIL": "c@example.com"}
+        patch = unittest.mock.patch.dict(os.environ, env, clear=True)
         patch.start()
         self.addCleanup(patch.stop)
         self.git("init", "--quiet", "--initial-branch=main")
