@@ -29,11 +29,10 @@ Releases are CalVer Git tags `vYYYY.MM.DD.N` (UTC date; `N` counts from 0 within
 Nobody picks versions or pushes tags by hand.
 Cargo packages stay at `0.0.0`; release builds embed the real version via `KUKAROLL_VERSION`.
 
-`.github/workflows/release.yml` runs after every CI run on main, and every 30 minutes as a fallback.
-[`release/plan-release.py`](release/plan-release.py) releases main's head commit when something in the image changed since the last tag and CI passed,
-and either no Renovate update to the image (an open PR, or a branch Renovate merges itself) may still land or the commit is at least 90 minutes old.
-The image's paths are the Dockerfile's `COPY` sources plus the `Dockerfile` and `.dockerignore`; keep each `COPY` on 1 line without JSON syntax, or the release scripts refuse it (`just release-test` checks).
-A manual `Release` run releases right away if the image changed and CI passed.
+After CI and every 30 minutes, [`release/plan-release.py`](release/plan-release.py) releases main if the image changed since the last release, CI passed and main's head was pushed at least 30 minutes ago;
+a Renovate update to the image that may still land holds it back until the head is 90 minutes old.
+For a release sooner, start the `Release` workflow by hand (`gh workflow run release.yml`): it skips the waiting, but still needs an image change and passing CI.
+The image's paths are the Dockerfile's `COPY` sources plus the `Dockerfile` and `.dockerignore`; keep each `COPY` on 1 line without JSON syntax, or the release scripts refuse it.
 
 [`release/release-notes.py`](release/release-notes.py) writes each GitHub Release's notes from its commits, best effort:
 every non-merge commit that touches the image is listed by its subject, so write subjects that read well to people who run kukaroll.
